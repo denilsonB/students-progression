@@ -1,0 +1,10 @@
+<!-- app/views/layouts/_header.html.erb -->
+<header>
+  <nav>
+    <ul>
+      <% if current_user %>
+        <li><%= link_to "Logout", sessions_destroy_path, method: :get %></li>
+      <% end %>
+    </ul>
+  </nav>
+</header>
