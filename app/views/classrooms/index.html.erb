@@ -4,10 +4,8 @@
 
 <div id="classrooms">
   <% @classrooms.each do |classroom| %>
-    <%= render classroom %>
-    <p>
-      <%= link_to "Show this classroom", classroom %>
-    </p>
+    <h1><%= classroom.name %></h1>
+    <%= link_to "View Tasks", classroom_tasks_path(classroom) %>
   <% end %>
 </div>
 

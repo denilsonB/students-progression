@@ -3,4 +3,5 @@ class Classroom < ApplicationRecord
 
   has_many :classroom_enrollments
   has_many :users, through: :classroom_enrollments
+  has_many :tasks
 end

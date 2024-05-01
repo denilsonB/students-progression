@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_30_021111) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_01_014512) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -31,6 +31,27 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_30_021111) do
     t.index ["author_id"], name: "index_classrooms_on_author_id"
   end
 
+  create_table "task_progresses", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "task_id", null: false
+    t.integer "progress"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["task_id"], name: "index_task_progresses_on_task_id"
+    t.index ["user_id"], name: "index_task_progresses_on_user_id"
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.string "title"
+    t.string "content"
+    t.bigint "author_id", null: false
+    t.bigint "classroom_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_tasks_on_author_id"
+    t.index ["classroom_id"], name: "index_tasks_on_classroom_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -43,4 +64,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_30_021111) do
   add_foreign_key "classroom_enrollments", "classrooms"
   add_foreign_key "classroom_enrollments", "users"
   add_foreign_key "classrooms", "users", column: "author_id"
+  add_foreign_key "task_progresses", "tasks"
+  add_foreign_key "task_progresses", "users"
+  add_foreign_key "tasks", "classrooms"
+  add_foreign_key "tasks", "users", column: "author_id"
 end

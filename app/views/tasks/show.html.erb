@@ -1,0 +1,67 @@
+<p style="color: green"><%= notice %></p>
+
+
+<div>
+  <%= @task.title%>
+</div>
+<div>
+  <%= simple_format(@task.content, id: 'task-text', data: { progress: @task_progress.progress }) %>
+</div>
+
+<div>
+  <%#= link_to "Edit this task", edit_task_path(@task) %> |
+  <%= link_to "Back to tasks", classroom_tasks_path(@task.classroom) %>
+
+  <%#= button_to "Destroy this task", @task, method: :delete %>
+</div>
+
+<script>
+  let body = document.body,
+      html = document.documentElement;
+
+  let height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+
+  // const setProgress = () => {
+  //   let scrollFromTop = (html.scrollTop || body.scrollTop) ;
+  //   let width = (scrollFromTop / height) * 100
+  //   var taskId = <%= @task.id %>; 
+  //   var classroomId = <%= @task.classroom_id%>
+  //   console.log('ele entra aqui??');
+
+  //   width = Math.min(parseInt(width), 100);
+  //   var url = '/classrooms/'+ classroomId + '/tasks/' + taskId + '/update_progress';
+  //   var data = { progress: width };
+  //   var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      
+  //   fetch(url, {
+  //      method: 'PATCH',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'X-CSRF-Token': csrfToken
+  //     },
+  //       body: JSON.stringify(data)
+  //     })
+  //     .then(response => {
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+  //     })
+  //   console.log(width);
+  //   console.log(taskId);
+
+  // }
+
+  const setScrollOnLoad = () => {
+    var taskText = document.getElementById('task-text');
+    
+    console.log('ENTRO NA TAL  DA  FUNCTIONS')
+    var progress = <%= @task_progress.progress%>;
+    console.log(progress);
+    window.scrollTo(0, progress); // values are x,y-offset
+    taskText.scrollTop = progress;
+  }
+
+  //window.addEventListener('scroll', setProgress);
+  window.addEventListener('DOMContentLoaded', setScrollOnLoad);
+  //setProgress();
+</script>

@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :classrooms
+  resources :classrooms do 
+    resources :tasks do
+      patch 'update_progress', on: :member
+    end
+  end
   get 'sessions/new'
   get 'sessions/create'
   get 'sessions/destroy'

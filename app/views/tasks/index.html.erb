@@ -1,0 +1,15 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Tasks</h1>
+
+<div id="tasks">
+  <% @tasks.each do |task| %>
+    <li><%= task.title %></li>
+    <p>
+      <%= link_to "Show this task", classroom_task_path(@classroom, task) %>
+    </p>
+  <% end %>
+</div>
+
+
+<%#= link_to "Create Task", new_classroom_task_path(@classroom) %>
