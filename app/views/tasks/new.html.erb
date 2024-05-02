@@ -1,9 +1,34 @@
-<h1>New task</h1>
+<h1>Nova Atividade</h1>
+<div id="result"></div>
+<%= form_with url: classroom_tasks_path do |f| %>
+  <%= f.label 'Conteúdo' %>
+  <%= f.text_area :content,size: "50x10", id: 'textArea' %><br>
 
-<%= render "form", task: @task %>
+  <%= f.submit "Criar Tarefa" %>
+  <button type="button" onclick="countWordsSentencesSyllables()">Avaliar</button><br><br>
+<% end %>
 
 <br>
 
-<div>
-  <%= link_to "Back to tasks", tasks_path %>
-</div>
+<script>
+function countWordsSentencesSyllables() {
+    var text = document.getElementById('textArea').value;
+    var wordCount = text.trim().split(/\s+/).length;
+    var sentenceCount = text.trim().split(/[.!?]+/).length - 1;
+    var syllableCount = countSyllables(text);
+    var flesh_kincaid_grade_level = (0.39*(wordCount/sentenceCount)+11.8*(syllableCount/wordCount))-15.59
+
+    document.getElementById('result').innerHTML = "<strong>Quantidade de palavras:</strong> " + wordCount + "<br>" +
+                                                    "<strong>Quantidade de Sentenças:</strong> " + sentenceCount + "<br>" +
+                                                    "<strong>Quantidade de Silabas:</strong> " + syllableCount + "<br>" +
+                                                    "<strong>Flesch Kincaide Grade:</strong> " + flesh_kincaid_grade_level.toFixed(2) + "<br>" ;
+}
+
+function countSyllables(word) {
+    word = word.toLowerCase().replace(/[^a-z]/g, ''); // Remove non-alphabetic characters
+    if (word.length <= 3) return 1; // Words of 3 letters or fewer are 1 syllable
+    word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, ''); // Remove common suffixes
+    word = word.replace(/^y/, ''); // Remove initial y
+    return word.match(/[aeiouy]{1,2}/g).length; // Count the remaining vowel sequences
+}
+</script>

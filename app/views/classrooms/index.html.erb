@@ -1,12 +1,12 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Classrooms</h1>
+<h1>Turmas</h1>
 
 <div id="classrooms">
   <% @classrooms.each do |classroom| %>
     <h1><%= classroom.name %></h1>
-    <%= link_to "View Tasks", classroom_tasks_path(classroom) %>
+    <%= link_to "Ver Atividades", classroom_tasks_path(classroom) %>
   <% end %>
 </div>
 
-<%= link_to "New classroom", new_classroom_path %>
+<%#= link_to "New classroom", new_classroom_path %>

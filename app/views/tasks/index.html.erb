@@ -1,12 +1,13 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Tasks</h1>
+<h1>Atividades</h1>
 
 <div id="tasks">
   <% @tasks.each do |task| %>
     <li><%= task.title %></li>
+    <h3> Seu progresso lendo <%= @task_id_progress[task.id] || 0%>%</h3>
     <p>
-      <%= link_to "Show this task", classroom_task_path(@classroom, task) %>
+      <%= link_to "Ver Atividade", classroom_task_path(@classroom, task) %>
     </p>
   <% end %>
 </div>

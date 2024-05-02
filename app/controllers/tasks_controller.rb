@@ -1,17 +1,18 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy update_progress]
+  before_action :set_classroom, only: %i[ show edit update destroy new]
 
   # GET /tasks or /tasks.json
   def index
     @classroom = Classroom.find(params[:classroom_id])
     @tasks = @classroom.tasks
+    @task_id_progress = {}
+    current_user.task_progresses.pluck(:task_id,:progress).each {|task,progress| @task_id_progress[task]=progress}
   end
 
   # GET /tasks/1 or /tasks/1.json
   def show
-    p 'ele etra awui:?@@@@@@@@@@@'
     @task_progress = current_user.task_progresses.find_or_initialize_by(task_id: @task.id)
-    p @task_progress
   end
 
   # GET /tasks/new
@@ -62,8 +63,6 @@ class TasksController < ApplicationController
   end
 
   def update_progress
-    p "@@@@@@@@@@@@@@?@@@@@@@@@@@@@@"
-    p 'ele bate aqui?'
     @task_progress = current_user.task_progresses.find_or_initialize_by(task_id: @task.id)
     @task_progress.update(progress: params[:progress])
     head :no_content
@@ -78,5 +77,9 @@ class TasksController < ApplicationController
     # Only allow a list of trusted parameters through.
     def task_params
       params.require(:task).permit(:title, :content, :author_id, :classroom_id)
+    end
+
+    def set_classroom
+      @classroom = Classroom.find(params[:classroom_id])
     end
 end
