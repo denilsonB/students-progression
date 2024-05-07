@@ -13,13 +13,18 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.create(user_params)
-    if @user.valid?
-      session[:user_id] = @user.id
-      redirect_to @user
-    else
-      flash[:error] = "Error- please try to create an account again."
-      redirect_to new_user_path
+    p '---------========'
+    p user_params
+    @user = User.new(user_params)
+
+    respond_to do |format|
+      if @user.save
+        format.html { redirect_to task_url(@user), notice: "User was successfully created." }
+        format.json { render :show, status: :created, location: @user }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -37,6 +42,6 @@ class UsersController < ApplicationController
 
   private 
   def user_params
-    params.require(:user).permit(:email, :password)
+    params.require(:user).permit(:name, :email, :password, :grade_level)
   end
 end

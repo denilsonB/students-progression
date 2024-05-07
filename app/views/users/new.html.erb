@@ -1,0 +1,17 @@
+
+<%= form_with url: users_path do |f| %>
+
+  <%= f.label 'Nome' %>
+  <%= f.text_field :name %><br>
+
+  <%= f.label :grade_level %>
+  <%= f.select :grade_level, User.grade_levels.keys.map { |grade| [grade.to_s.humanize, grade] } %><br>
+
+  <%= f.label 'email' %>
+  <%= f.text_field :email %><br>
+
+  <%= f.label 'Senha' %>
+  <%= f.password_field :password %><br>
+
+  <%= f.submit "Criar Usuario" %>
+<% end %>
