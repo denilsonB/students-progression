@@ -3,7 +3,7 @@ class ClassroomsController < ApplicationController
 
   # GET /classrooms or /classrooms.json
   def index
-    @classrooms = current_user.classrooms
+    @classrooms = current_user.user_type == 'student' ? current_user.classrooms : Classroom.where(author_id:current_user.id)
   end
 
   # GET /classrooms/1 or /classrooms/1.json

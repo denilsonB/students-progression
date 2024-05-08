@@ -13,18 +13,11 @@ class UsersController < ApplicationController
   end
 
   def create
-    p '---------========'
-    p user_params
     @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to task_url(@user), notice: "User was successfully created." }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.save
+      redirect_to @user, notice: "User criado com sucesso"
+    else
+      render :new
     end
   end
 
@@ -42,6 +35,6 @@ class UsersController < ApplicationController
 
   private 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :grade_level)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, :grade_level)
   end
 end

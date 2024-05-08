@@ -1,17 +1,18 @@
+<%= form_with(model: @user, url: users_path) do |form| %>
+  <%= form.label 'Nome' %>
+  <%= form.text_field :name %><br>
 
-<%= form_with url: users_path do |f| %>
+  <%= form.label 'Email' %>
+  <%= form.email_field :email %><br>
 
-  <%= f.label 'Nome' %>
-  <%= f.text_field :name %><br>
+  <%= form.label 'Senha' %>
+  <%= form.password_field :password %><br>
 
-  <%= f.label :grade_level %>
-  <%= f.select :grade_level, User.grade_levels.keys.map { |grade| [grade.to_s.humanize, grade] } %><br>
+  <%= form.label 'Confirmação de senha' %>
+  <%= form.password_field :password_confirmation %><br>
 
-  <%= f.label 'email' %>
-  <%= f.text_field :email %><br>
+  <%= form.label :grade_level %>
+  <%= form.select :grade_level, User.grade_levels.keys %><br>
 
-  <%= f.label 'Senha' %>
-  <%= f.password_field :password %><br>
-
-  <%= f.submit "Criar Usuario" %>
+  <%= form.submit "Criar Usuário" %>
 <% end %>

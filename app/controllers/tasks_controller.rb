@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy update_progress]
-  before_action :set_classroom, only: %i[ show edit update destroy new]
+  before_action :set_classroom, only: %i[ show edit update destroy new create]
 
   # GET /tasks or /tasks.json
   def index
@@ -26,16 +26,12 @@ class TasksController < ApplicationController
 
   # POST /tasks or /tasks.json
   def create
-    @task = Task.new(task_params)
+    @task = @classroom.tasks.new(task_params)
     @task.author_id = current_user.id
-    respond_to do |format|
-      if @task.save
-        format.html { redirect_to task_url(@task), notice: "Task was successfully created." }
-        format.json { render :show, status: :created, location: @task }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
-      end
+    if @task.save
+      redirect_to @classroom, notice: "Task created successfully"
+    else
+      render :new
     end
   end
 
@@ -76,7 +72,7 @@ class TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.require(:task).permit(:title, :content, :author_id, :classroom_id)
+      params.require(:task).permit(:title, :content, :grade_level)
     end
 
     def set_classroom
