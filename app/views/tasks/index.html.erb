@@ -6,6 +6,8 @@
   <% @tasks.each do |task| %>
     <li><%= task.title %></li>
     <h3> Seu progresso lendo <%= @task_id_progress[task.id] || 0%>%</h3>
+    <h3><%= progress_text(current_user.grade_level,task.grade_level) %><%=task.grade_level%> </h3>
+
     <p>
       <%= link_to "Ver Atividade", classroom_task_path(@classroom, task) %>
     </p>
