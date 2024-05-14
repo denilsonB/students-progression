@@ -1,0 +1,11 @@
+.task.progress-red {
+  color: red;
+}
+
+.task.progress-blue {
+  color: rgb(99, 99, 245);
+}
+
+.task.progress-green {
+  color: green;
+}

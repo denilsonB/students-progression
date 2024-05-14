@@ -15,4 +15,14 @@ module TasksHelper
       "Este é um texto adequado pro seu Nível. Texto nível " 
     end
   end
+
+  def task_progress_class(progress)
+    if progress == 0
+      'progress-red'
+    elsif progress > 0 && progress < 100
+      'progress-blue'
+    else
+      'progress-green'
+    end
+  end
 end
