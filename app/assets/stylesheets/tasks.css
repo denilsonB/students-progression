@@ -9,3 +9,39 @@
 .task.progress-green {
   color: green;
 }
+
+/* Modal */
+.modal {
+  display: none; /* Hide the modal by default */
+  position: fixed; /* Position the modal relative to the viewport */
+  top: 50%; /* Position the top of the modal 50% from the top of the viewport */
+  left: 50%; /* Position the left of the modal 50% from the left of the viewport */
+  transform: translate(-50%, -50%); /* Center the modal both horizontally and vertically */
+  z-index: 1; /* Set the z-index to make sure the modal appears on top of other content */
+  width: 400px; /* Set the width of the modal */
+  background-color: white; /* Set the background color of the modal */
+  padding: 20px; /* Add padding to the modal content */
+  border-radius: 8px; /* Add border radius to the modal */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a shadow to the modal */
+}
+
+/* Overlay */
+.overlay {
+  display: none; /* Hide the overlay by default */
+  position: fixed; /* Position the overlay relative to the viewport */
+  top: 0; /* Position the top of the overlay at the top of the viewport */
+  left: 0; /* Position the left of the overlay at the left of the viewport */
+  width: 100%; /* Set the width of the overlay to cover the entire viewport */
+  height: 100%; /* Set the height of the overlay to cover the entire viewport */
+  background-color: rgba(0, 0, 0, 0.5); /* Set the background color of the overlay with some transparency */
+  z-index: 1; /* Set the z-index to make sure the overlay appears on top of other content */
+}
+
+/* Modal content */
+.modal-content {
+  display: flex; /* Use flexbox to align items */
+  flex-direction: column; /* Align items vertically */
+  justify-content: center; /* Align items vertically in the center */
+  align-items: center; /* Align items horizontally in the center */
+  text-align: center; /* Center text within modal content */
+}

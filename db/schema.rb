@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_14_003608) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_15_233751) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,6 +29,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_003608) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["author_id"], name: "index_classrooms_on_author_id"
+  end
+
+  create_table "feedbacks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "task_id", null: false
+    t.string "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["task_id"], name: "index_feedbacks_on_task_id"
+    t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
   create_table "task_progresses", force: :cascade do |t|
@@ -66,6 +76,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_003608) do
   add_foreign_key "classroom_enrollments", "classrooms"
   add_foreign_key "classroom_enrollments", "users"
   add_foreign_key "classrooms", "users", column: "author_id"
+  add_foreign_key "feedbacks", "tasks"
+  add_foreign_key "feedbacks", "users"
   add_foreign_key "task_progresses", "tasks"
   add_foreign_key "task_progresses", "users"
   add_foreign_key "tasks", "classrooms"

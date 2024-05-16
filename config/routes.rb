@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :classrooms do 
     resources :tasks do
       patch 'update_progress', on: :member
+      resources :feedbacks, only: [:index, :create]
     end
   end
   get 'sessions/new'

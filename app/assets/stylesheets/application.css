@@ -16,3 +16,33 @@
  #task-text {
   overflow-y: auto; /* Enable vertical scrolling */
 }
+/* Style the table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+}
+
+/* Style table header */
+table th {
+  padding: 12px;
+  text-align: left;
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+}
+
+/* Style table data cells */
+table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+/* Style alternating rows */
+table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Style hover effect */
+table tbody tr:hover {
+  background-color: #f2f2f2;
+}

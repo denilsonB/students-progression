@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   before_action :set_task, only: %i[ show edit update destroy update_progress]
   before_action :set_classroom, only: %i[ show edit update destroy new create]
+  before_action :set_feedback, only: [:show]
 
   # GET /tasks or /tasks.json
   def index
@@ -60,7 +61,8 @@ class TasksController < ApplicationController
 
   def update_progress
     @task_progress = current_user.task_progresses.find_or_initialize_by(task_id: @task.id)
-    @task_progress.update(progress: params[:progress])
+    @task_progress.update(progress: params[:progress]) 
+    
     head :no_content
   end
 
@@ -77,5 +79,9 @@ class TasksController < ApplicationController
 
     def set_classroom
       @classroom = Classroom.find(params[:classroom_id])
+    end
+
+    def set_feedback
+      @feedback = @task.feedbacks.new
     end
 end

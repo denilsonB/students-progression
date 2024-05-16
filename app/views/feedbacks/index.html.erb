@@ -1,0 +1,20 @@
+<h1>Feedbacks</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Aluno</th>
+      <th>Feedback</th>
+      <th>Data</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @feedbacks.each do |feedback| %>
+      <tr>
+        <td><%= feedback.user.name %></td>
+        <td><%= feedback.note %></td>
+        <td><%= feedback.created_at.in_time_zone('America/Sao_Paulo').strftime('%Y-%m-%d %H:%M:%S') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
