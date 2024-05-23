@@ -8,7 +8,12 @@ class FeedbacksController < ApplicationController
 
   def create
     @feedback = @task.feedbacks.new(feedback_params)
+    @task_progress = TaskProgress.find_by(user_id:current_user.id,task_id:@task.id)
+    @task_progress.progress = 100
     if @feedback.save
+      @task_progress.save!
+      p '-=-=-=-=-=-=-=-=-=-=-=-=-=-='
+      p @task_progress
       redirect_to classroom_tasks_path(@classroom), notice: "Feedback submitted successfully"
     else
       render 'tasks/show' # Render the show template if validation fails
@@ -26,6 +31,6 @@ class FeedbacksController < ApplicationController
   end
 
   def feedback_params
-    params.require(:feedback).permit(:note).merge(user_id: current_user.id)
+    params.require(:feedback).permit(:note,:comment).merge(user_id: current_user.id)
   end
 end

@@ -1,18 +1,57 @@
-<%= form_with(model: @user, url: users_path) do |form| %>
-  <%= form.label 'Nome' %>
-  <%= form.text_field :name %><br>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>YourAppName</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-  <%= form.label 'Email' %>
-  <%= form.email_field :email %><br>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= javascript_tag 'application' %>
 
-  <%= form.label 'Senha' %>
-  <%= form.password_field :password %><br>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <%= form_with(model: @user, url: users_path, local: true, class: "needs-validation", novalidate: true) do |form| %>
+          <div class="mb-3">
+            <%= form.label 'Nome', class: 'form-label' %>
+            <%= form.text_field :name, class: 'form-control', required: true %>
+          </div>
 
-  <%= form.label 'Confirmação de senha' %>
-  <%= form.password_field :password_confirmation %><br>
+          <div class="mb-3">
+            <%= form.label 'Email', class: 'form-label' %>
+            <%= form.email_field :email, class: 'form-control', required: true %>
+          </div>
 
-  <%= form.label :grade_level %>
-  <%= form.select :grade_level, User.grade_levels.keys %><br>
+          <div class="mb-3">
+            <%= form.label 'Senha', class: 'form-label' %>
+            <%= form.password_field :password, class: 'form-control', required: true %>
+          </div>
 
-  <%= form.submit "Criar Usuário" %>
-<% end %>
+          <div class="mb-3">
+            <%= form.label 'Confirmação de senha', class: 'form-label' %>
+            <%= form.password_field :password_confirmation, class: 'form-control', required: true %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label :grade_level, class: 'form-label' %>
+            <%= form.select :grade_level, User.grade_levels.keys, {}, class: 'form-select' %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.submit "Criar Usuário", class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

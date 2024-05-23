@@ -10,7 +10,7 @@
 
 <div>
   <%#= link_to "Edit this task", edit_task_path(@task) %> |
-   <button id="finishReadingBtn">Finish Reading</button>
+   <button id="finishReadingBtn"  class="btn btn-primary">Finish Reading</button>
 
   <%#= button_to "Destroy this task", @task, method: :delete %>
 </div>
@@ -26,9 +26,11 @@
       <div class="modal-content">
         <%= f.label :note, "Como você avalia o texto?" %>
         <%= f.select :note, options_for_select(["Abaixo do meu nível", "Adequado", "Acima do meu nível"]), class: "form-control" %>
+          <%= f.label 'Comentario' %>
+          <%= f.text_area :comment,size: "50x10" %><br>
       </div>
 
-      <%= f.submit "Submit Feedback", class: "btn btn-primary" %>
+      <%= f.submit "Submit Feedback", class: "btn btn-success" %>
     <% end %>
   </div>
 </div>

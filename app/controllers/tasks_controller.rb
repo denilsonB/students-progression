@@ -61,6 +61,7 @@ class TasksController < ApplicationController
 
   def update_progress
     @task_progress = current_user.task_progresses.find_or_initialize_by(task_id: @task.id)
+    return if @task_progress.progress >= params[:progress]
     @task_progress.update(progress: params[:progress]) 
     
     head :no_content
