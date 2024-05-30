@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_22_230137) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_30_195727) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,7 +46,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_22_230137) do
   create_table "task_progresses", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "task_id", null: false
-    t.integer "progress"
+    t.integer "progress", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["task_id"], name: "index_task_progresses_on_task_id"

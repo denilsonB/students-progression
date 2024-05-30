@@ -12,8 +12,6 @@ class FeedbacksController < ApplicationController
     @task_progress.progress = 100
     if @feedback.save
       @task_progress.save!
-      p '-=-=-=-=-=-=-=-=-=-=-=-=-=-='
-      p @task_progress
       redirect_to classroom_tasks_path(@classroom), notice: "Feedback submitted successfully"
     else
       render 'tasks/show' # Render the show template if validation fails

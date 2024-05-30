@@ -1,5 +1,13 @@
 <h1>Feedbacks</h1>
-
+<button class="info-button">
+  <h4>Soma dos feedbacks: <%= @feedbacks.pluck(:avaliation).sum %></h4>
+  <div class="tooltip">
+  Quanto mais alta a nota mais dificil os alunos acharam o texto.<br>
+  Acima do Nível: +1<br>
+  Adequado: 0<br>
+  Abaixo do Nível: -1     
+  </div>
+</button>
 <table>
   <thead>
     <tr>

@@ -4,10 +4,10 @@
 
 .task.progress-blue {
   color: rgb(99, 99, 245);
-}
+} 
 
 .task.progress-green {
-  color: green;
+  color: rgb(57, 230, 57);
 }
 
 /* Modal */
@@ -44,4 +44,48 @@
   justify-content: center; /* Align items vertically in the center */
   align-items: center; /* Align items horizontally in the center */
   text-align: center; /* Center text within modal content */
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-container {
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+}
+
+.book-page {
+  max-width: 80%; /* Limit the width of the book page */
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.task-content {
+  font-size: 16px;
+  color: #333;
+  text-align: justify; /* Justify text for a book-like appearance */
+  hyphens: auto; /* Enable hyphenation for better word wrapping */
+  line-height: 1.6; /* Improve readability with proper line height */
+}
+.task-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
 }

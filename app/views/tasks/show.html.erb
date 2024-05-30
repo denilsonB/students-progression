@@ -1,14 +1,18 @@
 <p style="color: green"><%= notice %></p>
 
 
-<div>
-  <%= @task.title%>
+<div class="container">
+  <h1 class="task-title"><%= @task.title %></h1>
 </div>
-<div>
-  <%= simple_format(@task.content, id: 'task-text', data: { progress: @task_progress.progress }) %>
-</div>
+  <div class="book-container">
+    <div class="book-page">
+      <div class="task-content">
+        <%= simple_format(@task.content, id: 'task-text', data: { progress: @task_progress.progress }) %>
+      </div>
+    </div>
+  </div>
 
-<div>
+<div class="text-center">
   <%#= link_to "Edit this task", edit_task_path(@task) %> |
    <button id="finishReadingBtn"  class="btn btn-primary">Finish Reading</button>
 
@@ -73,14 +77,21 @@
   }
 
   const setScrollOnLoad = () => {
-    var taskText = document.getElementById('task-text');
-    
-    console.log('ENTRO NA TAL  DA  FUNCTIONS')
-    var progress = <%= @task_progress.progress || 0%>;
-    console.log(progress);
-    window.scrollTo(0, progress); // values are x,y-offset
-    taskText.scrollTop = progress;
-  }
+    const progress = <%= @task_progress.progress || 0 %>;
+    const body = document.body;
+    const html = document.documentElement;
+    const scrollHeight = Math.max(body.scrollHeight, html.scrollHeight);
+    const clientHeight = Math.max(html.clientHeight, window.innerHeight);
+    const scrollPosition = (progress / 100) * (scrollHeight - clientHeight);
+
+    window.scrollTo(0, scrollPosition);
+    if (!sessionStorage.getItem('reloaded')) {
+      sessionStorage.setItem('reloaded', 'true');
+      window.location.reload();
+    } else {
+      setScrollOnLoad(); // Ensure it's called on initial load
+    }
+  };
 
 
 // Get the button that opens the modal
@@ -111,5 +122,5 @@ window.onclick = function(event) {
 
   window.addEventListener('scroll', setProgress);
   window.addEventListener('DOMContentLoaded', setScrollOnLoad);
-
+  setScrollOnLoad();
 </script>

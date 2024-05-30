@@ -27,7 +27,7 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title"><%= task.title %></h5>
-              <h6 class="card-subtitle mb-2 text-muted task <%= task_progress_class(@task_id_progress[task.id] || 0) %>">Seu progresso: <%= @task_id_progress[task.id] || 0 %>%</h6>
+              <h6 class="task <%= task_progress_class(@task_id_progress[task.id] || 0) %>">Seu progresso: <%= @task_id_progress[task.id] || 0 %>%</h6>
               <p class="card-text">
                 <%= progress_text(current_user.grade_level, task.grade_level) %><%= task.grade_level %>
               </p>

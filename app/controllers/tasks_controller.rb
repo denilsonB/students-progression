@@ -60,7 +60,7 @@ class TasksController < ApplicationController
   end
 
   def update_progress
-    @task_progress = current_user.task_progresses.find_or_initialize_by(task_id: @task.id)
+    @task_progress = current_user.task_progresses.find_or_create_by(task_id: @task.id)
     return if @task_progress.progress >= params[:progress]
     @task_progress.update(progress: params[:progress]) 
     
