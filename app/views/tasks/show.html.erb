@@ -18,6 +18,8 @@
   <% end %>
   <% if @page < @content_chunks.size - 1 %>
     <%= link_to "Next", classroom_task_path(@task.classroom, @task, page: @page + 1), id: 'next-btn', class: "btn btn-primary" %>
+  <% else %>
+    <%= link_to "Finish", classroom_tasks_path(@task.classroom), class: "btn btn-success", id: "finish-btn" %>
   <% end %>
 </div>
 
@@ -55,7 +57,7 @@
       const data = { progress: progress };
       const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-      fetch(url, {
+      return fetch(url, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -71,26 +73,45 @@
 
     const setScrollOnLoad = () => {
       const progress = <%= @task_progress.progress || 0 %>;
-      const scrollHeight = Math.max(bodyElement.scrollHeight, htmlElement.scrollHeight);
-      const clientHeight = Math.max(htmlElement.clientHeight, window.innerHeight);
+      const body = document.body;
+      const html = document.documentElement;
+      const scrollHeight = Math.max(body.scrollHeight, html.scrollHeight);
+      const clientHeight = Math.max(html.clientHeight, window.innerHeight);
       const scrollPosition = (progress / 100) * (scrollHeight - clientHeight);
 
       window.scrollTo(0, scrollPosition);
     };
 
     const nextBtn = document.getElementById('next-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const finishBtn = document.getElementById('finish-btn');
+
     if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
+      nextBtn.addEventListener('click', (event) => {
+        event.preventDefault();
         const progress = ((<%= @page + 1 %> / <%= @content_chunks.size %>) * 100).toFixed(2);
-        updateProgressClick(progress);
+        updateProgressClick(progress).then(() => {
+          window.location.href = nextBtn.href; // Navigate to the next page
+        });
       });
     }
 
-    const prevBtn = document.getElementById('prev-btn');
     if (prevBtn) {
-      prevBtn.addEventListener('click', () => {
+      prevBtn.addEventListener('click', (event) => {
+        event.preventDefault();
         const progress = ((<%= @page - 1 %> / <%= @content_chunks.size %>) * 100).toFixed(2);
-        updateProgressClick(progress);
+        updateProgressClick(progress).then(() => {
+          window.location.href = prevBtn.href; // Navigate to the previous page
+        });
+      });
+    }
+
+    if (finishBtn) {
+      finishBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        updateProgressClick(100).then(() => {
+          window.location.href = finishBtn.href; // Redirect to the tasks index page
+        });
       });
     }
 

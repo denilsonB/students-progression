@@ -14,6 +14,10 @@ class TasksController < ApplicationController
   # GET /tasks/1 or /tasks/1.json
   def show
     @task_progress = current_user.task_progresses.find_or_initialize_by(task_id: @task.id)
+    @task = Task.find(params[:id])
+    @content_chunks = @task.content.split("\n\n") # Split content by paragraphs
+    @page = params[:page].to_i
+    @page = 0 if @page < 0
   end
 
   # GET /tasks/new
@@ -61,9 +65,11 @@ class TasksController < ApplicationController
 
   def update_progress
     @task_progress = current_user.task_progresses.find_or_create_by(task_id: @task.id)
-    return if @task_progress.progress >= params[:progress]
-    @task_progress.update(progress: params[:progress]) 
     
+    return if @task_progress.progress >= params[:progress].to_i
+    
+    @task_progress.update(progress: params[:progress].to_i) 
+
     head :no_content
   end
 
