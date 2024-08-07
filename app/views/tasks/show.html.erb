@@ -1,22 +1,24 @@
 <p style="color: green"><%= notice %></p>
 
-
 <div class="container">
   <h1 class="task-title"><%= @task.title %></h1>
 </div>
-  <div class="book-container">
-    <div class="book-page">
-      <div class="task-content">
-        <%= simple_format(@task.content, id: 'task-text', data: { progress: @task_progress.progress }) %>
-      </div>
+
+<div class="book-container">
+  <div class="book-page">
+    <div class="task-content">
+      <%= simple_format(@content_chunks[@page], id: 'task-text', data: { progress: @task_progress.progress }) %>
     </div>
   </div>
+</div>
 
 <div class="text-center">
-  <%#= link_to "Edit this task", edit_task_path(@task) %> |
-   <button id="finishReadingBtn"  class="btn btn-primary">Finish Reading</button>
-
-  <%#= button_to "Destroy this task", @task, method: :delete %>
+  <% if @page > 0 %>
+    <%= link_to "Previous", classroom_task_path(@task.classroom, @task, page: @page - 1), id: 'prev-btn', class: "btn btn-secondary" %>
+  <% end %>
+  <% if @page < @content_chunks.size - 1 %>
+    <%= link_to "Next", classroom_task_path(@task.classroom, @task, page: @page + 1), id: 'next-btn', class: "btn btn-primary" %>
+  <% end %>
 </div>
 
 <!-- Modal -->
@@ -30,8 +32,8 @@
       <div class="modal-content">
         <%= f.label :note, "Como você avalia o texto?" %>
         <%= f.select :note, options_for_select(["Abaixo do meu nível", "Adequado", "Acima do meu nível"]), class: "form-control" %>
-          <%= f.label 'Comentario' %>
-          <%= f.text_area :comment,size: "50x10" %><br>
+        <%= f.label 'Comentario' %>
+        <%= f.text_area :comment, size: "50x10" %><br>
       </div>
 
       <%= f.submit "Submit Feedback", class: "btn btn-success" %>
@@ -40,87 +42,59 @@
 </div>
 
 <script>
-  let body = document.body,
-      html = document.documentElement;
+  document.addEventListener('DOMContentLoaded', () => {
+    const bodyElement = document.body;
+    const htmlElement = document.documentElement;
+    const height = Math.max(bodyElement.scrollHeight, bodyElement.offsetHeight, htmlElement.clientHeight, htmlElement.scrollHeight, htmlElement.offsetHeight);
 
-  let height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+    const updateProgressClick = (progress) => {
+      const taskId = <%= @task.id %>;
+      const classroomId = <%= @task.classroom_id %>;
 
-  const setProgress = () => {
-    let scrollFromTop = (html.scrollTop || body.scrollTop) ;
-    let width = (scrollFromTop / height) * 100
-    var taskId = <%= @task.id %>; 
-    var classroomId = <%= @task.classroom_id%>
-    console.log('ele entra aqui??');
+      const url = `/classrooms/${classroomId}/tasks/${taskId}/update_progress`;
+      const data = { progress: progress };
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    width = Math.min(parseInt(width), 100);
-
-    var url = '/classrooms/'+ classroomId + '/tasks/' + taskId + '/update_progress';
-    var data = { progress: width };
-    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-      
-    fetch(url, {
-       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrfToken
-      },
+      fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
         body: JSON.stringify(data)
-      })
-      .then(response => {
+      }).then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-      })
-    console.log(width);
-    console.log(taskId);
+      });
+    };
 
-  }
+    const setScrollOnLoad = () => {
+      const progress = <%= @task_progress.progress || 0 %>;
+      const scrollHeight = Math.max(bodyElement.scrollHeight, htmlElement.scrollHeight);
+      const clientHeight = Math.max(htmlElement.clientHeight, window.innerHeight);
+      const scrollPosition = (progress / 100) * (scrollHeight - clientHeight);
 
-  const setScrollOnLoad = () => {
-    const progress = <%= @task_progress.progress || 0 %>;
-    const body = document.body;
-    const html = document.documentElement;
-    const scrollHeight = Math.max(body.scrollHeight, html.scrollHeight);
-    const clientHeight = Math.max(html.clientHeight, window.innerHeight);
-    const scrollPosition = (progress / 100) * (scrollHeight - clientHeight);
+      window.scrollTo(0, scrollPosition);
+    };
 
-    window.scrollTo(0, scrollPosition);
-    if (!sessionStorage.getItem('reloaded')) {
-      sessionStorage.setItem('reloaded', 'true');
-      window.location.reload();
-    } else {
-      setScrollOnLoad(); // Ensure it's called on initial load
+    const nextBtn = document.getElementById('next-btn');
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        const progress = ((<%= @page + 1 %> / <%= @content_chunks.size %>) * 100).toFixed(2);
+        updateProgressClick(progress);
+      });
     }
-  };
 
+    const prevBtn = document.getElementById('prev-btn');
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        const progress = ((<%= @page - 1 %> / <%= @content_chunks.size %>) * 100).toFixed(2);
+        updateProgressClick(progress);
+      });
+    }
 
-// Get the button that opens the modal
-var btn = document.getElementById("finishReadingBtn");
-
-// When the user clicks on the button, open the modal
-btn.onclick = function() {
-  var modal = document.getElementById("feedbackModal");
-  modal.style.display = "block";
-}
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  var modal = document.getElementById("feedbackModal");
-  modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  var modal = document.getElementById("feedbackModal");
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-
-  window.addEventListener('scroll', setProgress);
-  window.addEventListener('DOMContentLoaded', setScrollOnLoad);
-  setScrollOnLoad();
+    window.addEventListener('DOMContentLoaded', setScrollOnLoad);
+    setScrollOnLoad();
+  });
 </script>
