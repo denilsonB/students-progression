@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Students Progress - <%= @task.title %></title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= javascript_tag 'application' %>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container mt-5">
+    <h1>Detalhes da atividade: <%= @task.title %></h1>
+    <table class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th>Nome do aluno</th>
+          <th>Progresso Atual (%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @students.each do |student| %>
+          <tr>
+            <td><%= student.name %></td>
+            <td>
+              <%= @task_id_progress[student.id] || 'Not Started' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= link_to 'Voltar para Tarefas', classroom_tasks_path(@classroom), class: 'btn btn-secondary mt-3' %>
+    <%= link_to 'Ver feedbacks', classroom_task_feedbacks_path(@classroom, @task), class: 'btn btn-secondary mt-3' %>
+  </div>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

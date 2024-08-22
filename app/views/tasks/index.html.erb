@@ -27,11 +27,18 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title"><%= task.title %></h5>
-              <h6 class="task <%= task_progress_class(@task_id_progress[task.id] || 0) %>">Seu progresso: <%= @task_id_progress[task.id] || 0 %>%</h6>
-              <p class="card-text">
-                <%= progress_text(current_user.grade_level, task.grade_level) %><%= task.grade_level %>
-              </p>
-              <%= link_to "Ver Atividade", classroom_task_path(@classroom, task), class: "btn btn-primary" %>
+              
+              <% if current_user.user_type != 'teacher' %>
+                <h6 class="task <%= task_progress_class(@task_id_progress[task.id] || 0) %>">
+                  Seu progresso: <%= @task_id_progress[task.id] || 0 %>%
+                </h6>
+                <p class="card-text">
+                  <%= progress_text(current_user.grade_level, task.grade_level) %><%= task.grade_level %>
+                </p>
+                <%= link_to "Ver Atividade", classroom_task_path(@classroom, task), class: "btn btn-primary" %>
+              <% else %>
+                <%= link_to "Ver Progresso dos Alunos", classroom_task_students_progress_path(@classroom, task), class: "btn btn-info" %>
+              <% end %>
             </div>
           </div>
         </div>
