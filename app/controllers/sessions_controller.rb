@@ -11,13 +11,13 @@ class SessionsController < ApplicationController
       session[:user_id] = @user.id
       redirect_to classrooms_path 
     else
-      flash[:notice] = "Login is invalid!"
+      flash[:notice] = "Login invalido"
       redirect_to new_session_path
     end
   end
 
   def destroy
     session[:user_id] = nil
-    redirect_to classrooms_path, notice: 'Logged out successfully'
+    redirect_to classrooms_path, notice: 'Logged out com Sucesso'
   end
 end

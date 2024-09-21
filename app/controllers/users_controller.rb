@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      redirect_to @user, notice: "User criado com sucesso"
+      redirect_to @user, notice: "Usuario criado com sucesso"
     else
       render :new
     end
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'user was successfully updated.' }
+        format.html { redirect_to @user, notice: 'Usuario Atualizado com Sucesso' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }

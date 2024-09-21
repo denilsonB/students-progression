@@ -12,7 +12,7 @@ class FeedbacksController < ApplicationController
     @task_progress.progress = 100
     if @feedback.save
       @task_progress.save!
-      redirect_to classroom_tasks_path(@classroom), notice: "Feedback submitted successfully"
+      redirect_to classroom_tasks_path(@classroom), notice: "Feedback Submetido com Sucesso"
     else
       render 'tasks/show' # Render the show template if validation fails
     end
