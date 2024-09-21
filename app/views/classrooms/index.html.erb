@@ -29,14 +29,16 @@
               <h5 class="card-title"><%= classroom.name %></h5>
               <h6 class="card-subtitle mb-2 text-muted">Professor: <%= classroom.author.name %></h6>
               <%= link_to "Ver Atividades", classroom_tasks_path(classroom), class: "btn btn-primary" %>
+              <% if current_user.id == classroom.author_id %>
+                <%= link_to "Ver Turma", classroom_path(classroom), class: "btn btn-info" %>
+              <% end %>
             </div>
           </div>
         </div>
       <% end %>
     </div>
 
-    <%# Uncomment the line below if you want to add a link to create a new classroom %>
-    <%#= link_to "New classroom", new_classroom_path, class: "btn btn-success mt-4" %>
+    <%= link_to "Nova Turma", new_classroom_path, class: "btn btn-success mt-4" %>
   </div>
 
   <!-- Bootstrap JS and dependencies -->

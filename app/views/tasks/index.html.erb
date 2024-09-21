@@ -20,7 +20,9 @@
     <% end %>
 
     <h1 class="mb-4">Atividades</h1>
-
+    <div class="mb-3">
+      <%= link_to "Turmas", classrooms_path, class: "btn btn-secondary" %>
+    </div>
     <div id="tasks" class="row">
       <% @tasks.each do |task| %>
         <div class="col-md-4 mb-4">
@@ -37,7 +39,12 @@
                 </p>
                 <%= link_to "Ver Atividade", classroom_task_path(@classroom, task), class: "btn btn-primary" %>
               <% else %>
-                <%= link_to "Ver Progresso dos Alunos", classroom_task_students_progress_path(@classroom, task), class: "btn btn-info" %>
+                <div class="mb-3">
+                  <%= link_to "Ver Progresso dos Alunos", classroom_task_students_progress_path(@classroom, task), class: "btn btn-info" %>
+                </div>
+                <div class="mb-3">
+                  <%= link_to "Ver Atividade", edit_classroom_task_path(@classroom, task), class: "btn btn-primary" %>
+                </div>
               <% end %>
             </div>
           </div>
@@ -45,8 +52,7 @@
       <% end %>
     </div>
 
-    <%# Uncomment the line below if you want to add a link to create a new task %>
-    <%#= link_to "Create Task", new_classroom_task_path(@classroom), class: "btn btn-success mt-4" %>
+    <%= link_to "Criar Atividade", new_classroom_task_path(@classroom), data: { turbolinks: false }, class: "btn btn-success mt-4" %>
   </div>
 
   <!-- Bootstrap JS and dependencies -->

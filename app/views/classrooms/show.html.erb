@@ -1,10 +1,18 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @classroom %>
+  <div class="mb-3">
+  <%= link_to "Turmas", classrooms_path, class: 'btn btn-secondary' %> 
+</div>
+
+<div class="mb-3">
+  <h5 class="form-control">Nome: <%= @classroom.name %></h5>
+</div>
 
 <div>
-  <%= link_to "Edit this classroom", edit_classroom_path(@classroom) %> |
-  <%= link_to "Back to classrooms", classrooms_path %>
-
-  <%= button_to "Destroy this classroom", @classroom, method: :delete %>
+  <div class="mb-3">
+  <%= link_to "Editar turma", edit_classroom_path(@classroom), class: 'btn btn-primary' %> 
+  </div>
+  <div class="mb-3">
+  <%= button_to "Excluir Turma", @classroom, method: :delete, class: 'btn btn-danger', data: { confirm: "Are you sure you want to delete this classroom?" } %>
+  </div>
 </div>

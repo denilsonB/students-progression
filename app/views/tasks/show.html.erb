@@ -14,12 +14,12 @@
 
 <div class="text-center">
   <% if @page > 0 %>
-    <%= link_to "Previous", classroom_task_path(@task.classroom, @task, page: @page - 1), id: 'prev-btn', class: "btn btn-secondary" %>
+    <%= link_to "Anterior", classroom_task_path(@task.classroom, @task, page: @page - 1), id: 'prev-btn', class: "btn btn-secondary" %>
   <% end %>
   <% if @page < @content_chunks.size - 1 %>
-    <%= link_to "Next", classroom_task_path(@task.classroom, @task, page: @page + 1), id: 'next-btn', class: "btn btn-primary" %>
+    <%= link_to "Proxima", classroom_task_path(@task.classroom, @task, page: @page + 1), id: 'next-btn', class: "btn btn-primary" %>
   <% else %>
-    <%= link_to "Finish", classroom_tasks_path(@task.classroom), class: "btn btn-success", id: "finish-btn" %>
+    <%= link_to "Finalizar", classroom_tasks_path(@task.classroom), class: "btn btn-success", id: "finish-btn" %>
   <% end %>
 </div>
 

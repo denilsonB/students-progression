@@ -1,9 +1,19 @@
 <h1>New classroom</h1>
 
-<%= render "form", classroom: @classroom %>
+<%= form_with(model: @classroom, local: true) do |f| %>
+  
+  <div class="mb-3">
+    <%= f.label 'Nome', class: 'form-label' %>
+    <%= f.text_field :name, class: 'form-control', required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.submit "Criar Turma", class: 'btn btn-primary' %>
+  </div>
+<% end %>
 
 <br>
 
 <div>
-  <%= link_to "Back to classrooms", classrooms_path %>
+  <%= link_to "Turmas", classrooms_path %>
 </div>

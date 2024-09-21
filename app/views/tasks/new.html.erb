@@ -2,24 +2,32 @@
 <div id="result"></div>
 <div id="comparation"></div>
 <%= form_with(model: [@classroom, @task], url: classroom_tasks_path(@classroom)) do |f| %>
-  
-  <%= f.label 'Titulo' %>
-  <%= f.text_field :title %><br>
+  <div class="mb-3">
+    <%= f.label 'Titulo' %>
+    <%= f.text_field :title %><br>
+  </div>
+  <div class="mb-3">
+    <%= f.label :grade_level %>
+    <%= f.select :grade_level, Task.grade_levels.keys, {}, id: 'gradeLevelSelect' %> <br>
+  </div>
 
-  <%= f.label :grade_level %>
-  <%= f.select :grade_level, Task.grade_levels.keys, {}, id: 'gradeLevelSelect' %> <br>
+  <div class="mb-3">
+    <%= f.label 'Conteúdo' %>
+    <%= f.text_area :content,size: "50x10", id: 'textArea' %><br>
+  </div>
+  <div class="mb-3">
+    <%= f.submit "Criar Tarefa", class: 'btn btn-primary' %>
+  </div>
 
-  <%= f.label 'Conteúdo' %>
-  <%= f.text_area :content,size: "50x10", id: 'textArea' %><br>
-
-  <%= f.submit "Criar Tarefa" %>
-  <button type="button" id="avaliarButton">Avaliar</button><br><br>
+  <div class="mb-3">
+    <button type="button" id="avaliarButton" class="btn btn-info">Avaliar Texto</button><br><br>
+  </div>
 <% end %>
 
 <br>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('turbo:load', function() {
     // Wait for the DOM content to be fully loaded
 
     // Get the textarea element by its ID

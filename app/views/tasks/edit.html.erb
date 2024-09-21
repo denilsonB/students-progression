@@ -1,10 +1,128 @@
-<h1>Editing task</h1>
-
-<%= render "form", task: @task %>
-
-<br>
-
-<div>
-  <%= link_to "Show this task", @task %> |
-  <%= link_to "Back to tasks", tasks_path %>
+<h1>Editar Tarefa</h1>
+<div class="mb-3">
+  <%= link_to "Atividades", classroom_tasks_path(@classroom), class: "btn btn-secondary" %>
 </div>
+<div id="result"></div>
+<div id="comparation"></div>
+
+<%= form_with(model: [@classroom, @task], url: classroom_task_path(@classroom, @task), method: :patch) do |f| %>
+  <div class="mb-3">
+    <%= f.label 'Título' %>
+    <%= f.text_field :title %><br>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :grade_level %>
+    <%= f.select :grade_level, Task.grade_levels.keys, {}, id: 'gradeLevelSelect' %> <br>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label 'Conteúdo' %>
+    <%= f.text_area :content, size: "50x10", id: 'textArea' %><br>
+  </div>
+
+  <div class="mb-3">
+    <%= f.submit "Salvar Tarefa", class: 'btn btn-primary' %>
+  </div>
+
+  <div class="mb-3">
+    <button type="button" id="avaliarButton" class="btn btn-info">Avaliar Texto</button><br><br>
+  </div>
+<% end %>
+
+
+
+<script>
+document.addEventListener('turbo:load', function() {
+    // Wait for the DOM content to be fully loaded
+
+    // Get the textarea element by its ID
+    var textArea = document.getElementById('textArea');
+    var gradeLevelSelect = document.getElementById('gradeLevelSelect');
+    var result  =  document.getElementById('result');
+    var comparation =  document.getElementById('comparation')
+    // Check if the textarea element exists
+    if (textArea) {
+          function countSyllables(word) {
+            word = word.toLowerCase().replace(/[^a-z]/g, ''); // Remove non-alphabetic characters
+            if (word.length <= 3) return 1; // Words of 3 letters or fewer are 1 syllable
+            word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, ''); // Remove common suffixes
+            word = word.replace(/^y/, ''); // Remove initial y
+            return word.match(/[aeiouy]{1,2}/g).length; // Count the remaining vowel sequences
+          }
+        // If the textarea exists, add a click event listener to the "Avaliar" button
+        document.getElementById('avaliarButton').addEventListener('click', function() {
+            // Get the text content of the textarea
+
+            var text = textArea.value;
+            var wordCount = text.trim().split(/\s+/).length;
+            var sentenceCount = text.trim().split(/[.!?]+/).length - 1;
+            var syllableCount = countSyllables(text);
+            console.log(syllableCount);
+            var flesh_kincaid_reading_ease = 206.835-(1.015*(wordCount/sentenceCount))-(84.6*(syllableCount/wordCount))
+            var selectedGradeLevel = gradeLevelSelect.value;
+            console.log("Selected Grade Level:", selectedGradeLevel);
+          var grade_levels = { fifth_grade: 0, sixth_grade: 1, seventh_grade: 2, eighth_and_nineth_grade: 3,tenth_to_twelveth_grade: 4, college: 5, college_graduate: 6, professional: 7 };
+        var flash_level = [];
+
+        switch (true) {
+          case flesh_kincaid_reading_ease >= 90 && flesh_kincaid_reading_ease<=100:
+              flash_level = [0,'fifth_grade']
+            break;
+          case flesh_kincaid_reading_ease >= 80 && flesh_kincaid_reading_ease<90:
+              flash_level = [1,'sixth_grade']
+            break; 
+          case flesh_kincaid_reading_ease >= 70 && flesh_kincaid_reading_ease<80:
+            flash_level = [2,'seventh_grade']
+            break; 
+          case flesh_kincaid_reading_ease >= 60 && flesh_kincaid_reading_ease<70:
+            flash_level = [3,'eighth_and_nineth_grade']
+            break;
+          case flesh_kincaid_reading_ease >= 50 && flesh_kincaid_reading_ease<60:
+            flash_level = [4,'tenth_to_twelveth_grade']
+            break; 
+          case flesh_kincaid_reading_ease >= 30 && flesh_kincaid_reading_ease<50:
+            flash_level = [5,'college']
+            break; 
+          case flesh_kincaid_reading_ease >= 10 && flesh_kincaid_reading_ease<30:
+            flash_level = [6,'college_graduate']
+            break; 
+          default:
+            flash_level = [7,'professional']
+            break;
+        }
+        var text_level = grade_levels[selectedGradeLevel]
+      
+        result.innerHTML = "<strong>Quantidade de palavras:</strong> " + wordCount + "<br>" +
+                                                        "<strong>Quantidade de Sentenças:</strong> " + sentenceCount + "<br>" +
+                                                        "<strong>Quantidade de Silabas:</strong> " + syllableCount + "<br>" +
+                                                        "<strong>Flesch reading ease:</strong> " + flesh_kincaid_reading_ease.toFixed(2) + "<br>"
+
+        var grade_difference = text_level-flash_level[0]
+        switch (true) {
+          case grade_difference <= -2:
+              comparation.innerHTML = "<strong>O Nivel  do texto está muito acima do proposto. O texto é adequado para alunos nivel</strong> " + flash_level[1] + "<br>"
+            break;
+          case grade_difference == -1:
+              comparation.innerHTML = "<strong>O Nivel  do texto está um pouco acima do proposto. O texto é adequado para alunos nivel</strong> " + flash_level[1] + "<br>"
+            break;
+          case grade_difference >= 2:
+              comparation.innerHTML = "<strong>O Nivel  do texto está muito abaixo do proposto. O texto é adequado para alunos nivel</strong> " + flash_level[1] + "<br>"
+            break;
+          case grade_difference == 1:
+              comparation.innerHTML = "<strong>O Nivel  do texto está um pouco abaixo do proposto. O texto é adequado para alunos nivel</strong> " + flash_level[1] + "<br>"
+            break;
+          default:
+            comparation.innerHTML = "<strong>O Nivel  do texto está no nivel adequado.</strong> " + "<br>"
+            break;
+        }
+
+            });
+        } else {
+            console.error("Textarea element not found.");
+        }
+});
+
+
+
+</script>
