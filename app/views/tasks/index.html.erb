@@ -51,8 +51,9 @@
         </div>
       <% end %>
     </div>
-
-    <%= link_to "Criar Atividade", new_classroom_task_path(@classroom), data: { turbolinks: false }, class: "btn btn-success mt-4" %>
+    <% if current_user.user_type == 'teacher' %>
+      <%= link_to "Criar Atividade", new_classroom_task_path(@classroom), data: { turbolinks: false }, class: "btn btn-success mt-4" %>
+    <%end%>
   </div>
 
   <!-- Bootstrap JS and dependencies -->
