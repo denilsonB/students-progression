@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_30_195727) do
+ActiveRecord::Schema[7.0].define(version: 2025_03_02_210126) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -49,6 +49,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_30_195727) do
     t.integer "progress", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "time_spent", default: 0
+    t.integer "last_page_read", default: 0
     t.index ["task_id"], name: "index_task_progresses_on_task_id"
     t.index ["user_id"], name: "index_task_progresses_on_user_id"
   end

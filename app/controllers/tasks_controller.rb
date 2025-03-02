@@ -1,8 +1,8 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: %i[ show edit update destroy update_progress students_progress]
-  before_action :set_classroom, only: %i[ show edit update destroy new create students_progress]
+  before_action :set_task, only: %i[ show edit update destroy update_progress students_progress update_time_spent]
+  before_action :set_classroom, only: %i[ show edit update destroy new create students_progress ]
   before_action :set_feedback, only: [:show]
-
+  before_action :set_session_start_time, only: [:show]
   # GET /tasks or /tasks.json
   def index
     @classroom = Classroom.find(params[:classroom_id])
@@ -15,7 +15,12 @@ class TasksController < ApplicationController
     authorize_teacher!
 
     @task_id_progress = {}
-    TaskProgress.where(task_id: @task.id).pluck(:user_id,:progress).each {|user,progress| @task_id_progress[user]=progress}
+    @task_id_time_spent = {}
+    TaskProgress.where(task_id: @task.id).pluck(:user_id,:progress, :time_spent).each {
+      |user,progress,time_spent| 
+      @task_id_progress[user] = progress
+      @task_id_time_spent[user] = Time.at(time_spent).utc.strftime("%M:%S")
+    }
     @students = @classroom.users
   end
 
@@ -24,9 +29,10 @@ class TasksController < ApplicationController
     @task_progress = current_user.task_progresses.find_or_initialize_by(task_id: @task.id)
     @task = Task.find(params[:id])
     @content_chunks = @task.content.split("\n\n") # Split content by paragraphs
-    @page = params[:page].to_i
+    @page = params[:page].to_i >= @task_progress.last_page_read ? params[:page].to_i : @task_progress.last_page_read
     @page = 0 if @page < 0
     update_progress_pagenated
+    update_time_spent
   end
 
   # GET /tasks/new
@@ -83,6 +89,13 @@ class TasksController < ApplicationController
     head :no_content
   end
 
+  def update_time_spent
+    @task_progress = current_user.task_progresses.find_or_create_by(task_id: @task.id)
+    @task_progress.add_time_spent(params[:time_spent].to_i)
+
+    head :ok
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_task
@@ -111,6 +124,18 @@ class TasksController < ApplicationController
 
     def update_progress_pagenated
       progress = ((@page + 1).to_f / @content_chunks.size * 100).round(2)
-      @task_progress.update(progress: progress) 
+      @task_progress.update(progress: progress,last_page_read: @page) if progress >= @task_progress.progress
+    end
+
+    def update_time_spent
+      time_spent = Time.current.to_i - session[:start_time]
+      time_spent = 0 if time_spent < 0
+      
+      session[:start_time] = Time.current.to_i
+      @task_progress.update(time_spent: @task_progress.time_spent + time_spent)
+    end
+
+    def set_session_start_time
+      session[:start_time] = Time.current.to_i unless session[:start_time]
     end
 end

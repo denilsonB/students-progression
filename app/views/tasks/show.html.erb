@@ -44,6 +44,10 @@
 </div>
 
 <script>
+  
+  let startTime = Date.now();
+  console.log("📢 Página carregada - startTime inicializado:", startTime);
+  
   document.addEventListener('DOMContentLoaded', () => {
     const bodyElement = document.body;
     const htmlElement = document.documentElement;
@@ -71,6 +75,30 @@
       });
     };
 
+    const sendTimeSpent = () => {
+      console.log("PELO AMOR DE DEUS TA ENTRANDO AQUI");
+      let endTime = Date.now();
+      let timeSpent = Math.floor((endTime - startTime) / 1000); // Convert to seconds
+
+      const taskId = <%= @task.id %>;
+      const classroomId = <%= @task.classroom_id %>;
+      const url = `/classrooms/${classroomId}/tasks/${taskId}/update_time_spent`;
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+      fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({ time_spent: timeSpent })
+      }).then(response => {
+        if (!response.ok) {
+          console.error('Failed to update time spent');
+        }
+      });
+    };
+
     const setScrollOnLoad = () => {
       const progress = <%= @task_progress.progress || 0 %>;
       const body = document.body;
@@ -85,6 +113,12 @@
     const nextBtn = document.getElementById('next-btn');
     const prevBtn = document.getElementById('prev-btn');
     const finishBtn = document.getElementById('finish-btn');
+
+    [nextBtn, prevBtn, finishBtn].forEach(button => {
+      if (button) {
+        button.addEventListener('click', sendTimeSpent);
+      }
+    });
 
     if (nextBtn) {
       nextBtn.addEventListener('click', (event) => {
@@ -115,7 +149,10 @@
       });
     }
 
-    window.addEventListener('DOMContentLoaded', setScrollOnLoad);
-    setScrollOnLoad();
+  setTimeout(() => {
+    sendTimeSpent();
+  }, 2000);
+
+  window.addEventListener('beforeunload', sendTimeSpent);
   });
 </script>

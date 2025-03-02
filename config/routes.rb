@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :classrooms do 
     resources :tasks do
       patch 'update_progress', on: :member
+      patch 'update_time_spent', on: :member
       resources :feedbacks, only: [:index, :create]
       get :students_progress
     end
