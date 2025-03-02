@@ -25,4 +25,17 @@ module TasksHelper
       'progress-green'
     end
   end
+
+  def translate_grades
+    { 
+      "Quinta Série" => "fifth_grade" ,
+      "Sexta Série" => "sixth_grade",
+      "Setima Série" => "seventh_grade", 
+      "Oitava e Nona Série" => "eighth_and_nineth_grade",
+      "Ensino Médio" => "tenth_to_twelveth_grade", 
+      "Faculdade" => "college", 
+      "Graduado em faculdade" => "college_graduate", 
+      "Profissional" => "professional" 
+    }
+  end
 end

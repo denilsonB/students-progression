@@ -13,7 +13,7 @@
 
   <div class="mb-3">
     <%= f.label :grade_level %>
-    <%= f.select :grade_level, Task.grade_levels.keys, {}, id: 'gradeLevelSelect' %> <br>
+    <%= f.select :grade_level, translate_grades, {}, id: 'gradeLevelSelect' %> <br>
   </div>
 
   <div class="mb-3">
@@ -67,28 +67,28 @@ document.addEventListener('turbo:load', function() {
 
         switch (true) {
           case flesh_kincaid_reading_ease >= 90 && flesh_kincaid_reading_ease<=100:
-              flash_level = [0,'fifth_grade']
+              flash_level = [0,'Quinta Série']
             break;
           case flesh_kincaid_reading_ease >= 80 && flesh_kincaid_reading_ease<90:
-              flash_level = [1,'sixth_grade']
+              flash_level = [1,'Sexta Série']
             break; 
           case flesh_kincaid_reading_ease >= 70 && flesh_kincaid_reading_ease<80:
-            flash_level = [2,'seventh_grade']
+            flash_level = [2,'Setima Série']
             break; 
           case flesh_kincaid_reading_ease >= 60 && flesh_kincaid_reading_ease<70:
-            flash_level = [3,'eighth_and_nineth_grade']
+            flash_level = [3,'Oitava e Nona Série']
             break;
           case flesh_kincaid_reading_ease >= 50 && flesh_kincaid_reading_ease<60:
-            flash_level = [4,'tenth_to_twelveth_grade']
+            flash_level = [4,'Ensino Médio']
             break; 
           case flesh_kincaid_reading_ease >= 30 && flesh_kincaid_reading_ease<50:
-            flash_level = [5,'college']
+            flash_level = [5,'Faculdade']
             break; 
           case flesh_kincaid_reading_ease >= 10 && flesh_kincaid_reading_ease<30:
-            flash_level = [6,'college_graduate']
+            flash_level = [6,'Graduado em faculdade']
             break; 
           default:
-            flash_level = [7,'professional']
+            flash_level = [7,'Profissional']
             break;
         }
         var text_level = grade_levels[selectedGradeLevel]

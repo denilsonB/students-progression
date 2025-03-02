@@ -19,6 +19,7 @@
         <tr>
           <th>Nome do aluno</th>
           <th>Progresso Atual (%)</th>
+          <th>Tempo de Leitura</th>
         </tr>
       </thead>
       <tbody>
@@ -26,7 +27,10 @@
           <tr>
             <td><%= student.name %></td>
             <td>
-              <%= @task_id_progress[student.id] || 'Not Started' %>
+              <%= @task_id_progress[student.id] || 'Não Iniciado' %>
+            </td>
+            <td>
+              <%= @task_id_time_spent[student.id] || '00:00' %>
             </td>
           </tr>
         <% end %>
