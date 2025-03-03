@@ -30,7 +30,7 @@
               <h6 class="card-subtitle mb-2 text-muted">Professor: <%= classroom.author.name %></h6>
               <%= link_to "Ver Atividades", classroom_tasks_path(classroom), class: "btn btn-primary" %>
               <% if current_user.id == classroom.author_id %>
-                <%= link_to "Ver Turma", classroom_path(classroom), class: "btn btn-info" %>
+                <%= link_to "Editar Turma", classroom_path(classroom), class: "btn btn-info" %>
               <% end %>
             </div>
           </div>

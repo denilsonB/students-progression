@@ -52,7 +52,7 @@ document.addEventListener('turbo:load', function() {
             var wordCount = text.trim().split(/\s+/).length;
             var sentenceCount = text.trim().split(/[.!?]+/).length - 1;
             var syllableCount = countSyllables(text);
-            console.log(syllableCount);
+            var reading_time = wordCount / 200;
             var flesh_kincaid_reading_ease = 206.835-(1.015*(wordCount/sentenceCount))-(84.6*(syllableCount/wordCount))
             var selectedGradeLevel = gradeLevelSelect.value;
             console.log("Selected Grade Level:", selectedGradeLevel);
@@ -90,7 +90,7 @@ document.addEventListener('turbo:load', function() {
         result.innerHTML = "<strong>Quantidade de palavras:</strong> " + wordCount + "<br>" +
                                                         "<strong>Quantidade de Sentenças:</strong> " + sentenceCount + "<br>" +
                                                         "<strong>Quantidade de Silabas:</strong> " + syllableCount + "<br>" +
-                                                        "<strong>Flesch reading ease:</strong> " + flesh_kincaid_reading_ease.toFixed(2) + "<br>"
+                                                        "<strong>Flesch reading ease:</strong> " + flesh_kincaid_reading_ease.toFixed(2) + "<br>" + "<strong>Tempo de Leitura: </strong>" + Math.floor(reading_time) + " Minutos<br>"
 
         var grade_difference = text_level-flash_level[0]
         switch (true) {

@@ -18,6 +18,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:user_id] = nil
+    session[:start_time] = nil
     redirect_to classrooms_path, notice: 'Logged out com Sucesso'
   end
 end

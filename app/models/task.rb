@@ -7,4 +7,12 @@ class Task < ApplicationRecord
 
   enum grade_level: { fifth_grade: 0, sixth_grade: 1, seventh_grade: 2, eighth_and_nineth_grade: 3,tenth_to_twelveth_grade: 4, college: 5, college_graduate: 6, professional: 7 }
   validates :grade_level, presence: true
+
+  before_save :set_reading_time 
+
+  def set_reading_time
+    content_words_count = self.content.split(' ').count
+    reading_time = content_words_count / 200
+    self.reading_time = reading_time
+  end
 end
