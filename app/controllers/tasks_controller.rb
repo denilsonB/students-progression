@@ -28,8 +28,8 @@ class TasksController < ApplicationController
   def show
     @task_progress = current_user.task_progresses.find_or_initialize_by(task_id: @task.id)
     @task = Task.find(params[:id])
-    @content_chunks = @task.content.split("\n\n") # Split content by paragraphs
-    @page = params[:page].to_i >= @task_progress.last_page_read ? params[:page].to_i : @task_progress.last_page_read
+    @content_chunks = @task.content.split("\n\n") 
+    @page = params[:page].to_i == 0 ? @task_progress.last_page_read : params[:page].to_i
     @page = 0 if @page < 0
     update_progress_pagenated
     update_time_spent
