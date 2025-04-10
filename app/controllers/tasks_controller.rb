@@ -117,7 +117,7 @@ class TasksController < ApplicationController
     end
 
     def authorize_teacher!
-      unless current_user.user_type == 'teacher'
+      unless current_user.user_type == 'Professor'
         redirect_to classroom_tasks_path(@classroom), alert: 'Access denied.'
       end
     end

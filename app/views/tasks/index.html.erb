@@ -30,12 +30,12 @@
             <div class="card-body">
               <h5 class="card-title"><%= task.title %></h5>
               
-              <% if current_user.user_type != 'teacher' %>
+              <% if current_user.user_type != 'Professor' %>
                 <h6 class="task <%= task_progress_class(@task_id_progress[task.id] || 0) %>">
                   Seu progresso: <%= @task_id_progress[task.id] || 0 %>%
                 </h6>
                 <p class="card-text">
-                  <%= progress_text(current_user.grade_level, task.grade_level) %><%= task.grade_level %>
+                  <%= progress_text(current_user.grade_level, task.grade_level) %><%= Task::TRANSLATED_GRADES[task.grade_level] %>
                 </p>
                 <%= link_to "Ver Atividade", classroom_task_path(@classroom, task), class: "btn btn-primary" %>
               <% else %>
@@ -51,7 +51,7 @@
         </div>
       <% end %>
     </div>
-    <% if current_user.user_type == 'teacher' %>
+    <% if current_user.user_type == 'Professor' %>
       <%= link_to "Criar Atividade", new_classroom_task_path(@classroom), data: { turbolinks: false }, class: "btn btn-success mt-4" %>
     <%end%>
   </div>

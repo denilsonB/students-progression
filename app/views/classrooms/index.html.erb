@@ -38,7 +38,7 @@
       <% end %>
     </div>
 
-    <% if current_user.user_type == 'teacher' %>
+    <% if current_user.user_type == 'Professor' %>
       <%= link_to "Nova Turma", new_classroom_path, class: "btn btn-success mt-4" %>
     <%end%>
   </div>

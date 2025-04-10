@@ -37,8 +37,13 @@
           </div>
 
           <div class="mb-3">
-            <%= form.label :grade_level, class: 'form-label' %>
-            <%= form.select :grade_level, User.grade_levels.keys, {}, class: 'form-select' %>
+            <%= form.label 'Tipo de usuário', class: 'form-label' %>
+            <%= form.select :user_type, ['Aluno', 'Professor'], {}, class: 'form-select' %>
+          </div>
+
+          <div class="mb-3">
+            <%= form.label 'Nível de escolaridade', class: 'form-label' %>
+            <%= form.select :grade_level, translate_grades, {}, class: 'form-select' %>
           </div>
 
           <div class="mb-3">

@@ -10,6 +10,17 @@ class Task < ApplicationRecord
 
   before_save :set_reading_time 
 
+  TRANSLATED_GRADES =     { 
+    "fifth_grade" => "Quinta Série",
+    "sixth_grade" => "Sexta Série",
+    "seventh_grade" => "Setima Série", 
+    "eighth_and_nineth_grade" => "Oitava e Nona Série",
+    "tenth_to_twelveth_grade" => "Ensino Médio", 
+    "college" => "Faculdade", 
+    "college_graduate" => "Graduado em faculdade", 
+    "professional" => "Profissional"
+  }
+
   def set_reading_time
     content_words_count = self.content.split(' ').count
     reading_time = content_words_count / 200
