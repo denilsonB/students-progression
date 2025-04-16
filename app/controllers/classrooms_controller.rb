@@ -1,9 +1,9 @@
 class ClassroomsController < ApplicationController
-  before_action :set_classroom, only: %i[ show edit update destroy ]
+  before_action :set_classroom, only: %i[ show edit update destroy classroom_students]
 
   # GET /classrooms or /classrooms.json
   def index
-    @classrooms = current_user.user_type == 'student' ? current_user.classrooms : Classroom.where(author_id:current_user.id)
+    @classrooms = current_user.user_type == 'Aluno' ? current_user.classrooms : Classroom.where(author_id:current_user.id)
   end
 
   # GET /classrooms/1 or /classrooms/1.json
@@ -53,18 +53,21 @@ class ClassroomsController < ApplicationController
     @classroom.destroy
 
     respond_to do |format|
-      format.html { redirect_to classrooms_url, notice: "Classroom Excluida com Sucesso." }
+      format.html { redirect_to classrooms_url, notice: "Turma Excluida com Sucesso." }
       format.json { head :no_content }
     end
   end
 
+  def classroom_students
+    @students = @classroom.users
+  end 
+
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_classroom
-      @classroom = Classroom.find(params[:id])
+      @classroom = params[:id].nil? ? Classroom.find(params[:classroom_id]) : Classroom.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def classroom_params
       params.require(:classroom).permit(:name, :author_id)
     end

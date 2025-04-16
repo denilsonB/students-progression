@@ -10,6 +10,9 @@
 
   <!-- Bootstrap CSS -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body class="bg-light">
   <div class="container mt-5">
@@ -24,6 +27,7 @@
     <div id="classrooms" class="row">
       <% @classrooms.each do |classroom| %>
         <div class="col-md-4 mb-4">
+        <%p 'ai dentrooo'%>
           <div class="card">
             <div class="card-body">
               <h5 class="card-title"><%= classroom.name %></h5>
@@ -31,6 +35,7 @@
               <%= link_to "Ver Atividades", classroom_tasks_path(classroom), class: "btn btn-primary" %>
               <% if current_user.id == classroom.author_id %>
                 <%= link_to "Editar Turma", classroom_path(classroom), class: "btn btn-info" %>
+                <%= link_to "", classroom_classroom_students_path(classroom), class: "fas fa-user-plus" %>
               <% end %>
             </div>
           </div>

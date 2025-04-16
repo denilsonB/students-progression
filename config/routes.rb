@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :classrooms do 
+  resources :classrooms do
+    get :classroom_students 
+    resources :students, only: [:create]
     resources :tasks do
       patch 'update_progress', on: :member
       patch 'update_time_spent', on: :member

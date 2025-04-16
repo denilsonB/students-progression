@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Students Progress - <%=  %></title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= javascript_tag 'application' %>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+      <div class="mb-4">
+      <% available_students = User.where(user_type: 'Aluno').where.not(id: @classroom.users.pluck(:id)) %>
+      <%= form_with url: classroom_students_path(@classroom), method: :post, local: true do |f| %>
+        <div class="form-group row">
+          <div class="col-md-8">
+            <%= f.collection_select :user_id, available_students, :id, :name, prompt: "Selecione um aluno", class: "form-control" %>
+          </div>
+          <div class="col-md-4">
+            <%= f.submit "Adicionar à Turma", class: "btn btn-success" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <table class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th>Nome do aluno</th>
+          <th>Nível de escolaridade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @students.each do |student| %>
+          <tr>
+            <td><%= student.name %></td>
+            <td><%= Task::TRANSLATED_GRADES[student.grade_level] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
