@@ -49,7 +49,7 @@
   let startTime = Date.now();
   console.log("📢 Página carregada - startTime inicializado:", startTime);
   
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('turbo:load', () => {
     const bodyElement = document.body;
     const htmlElement = document.documentElement;
     const height = Math.max(bodyElement.scrollHeight, bodyElement.offsetHeight, htmlElement.clientHeight, htmlElement.scrollHeight, htmlElement.offsetHeight);
@@ -77,7 +77,6 @@
     };
 
     const sendTimeSpent = () => {
-      console.log("PELO AMOR DE DEUS TA ENTRANDO AQUI");
       let endTime = Date.now();
       let timeSpent = Math.floor((endTime - startTime) / 1000); // Convert to seconds
 
@@ -147,8 +146,7 @@
       finishBtn.addEventListener('click', (event) => {
         event.preventDefault();
         updateProgressClick(100).then(() => {
-          console.log("TA ENTRANDO AQUI");
-          feedbackModal.style.display = 'block'; // Redirect to the tasks index page
+          feedbackModal.style.display = 'flex'; 
         });
       });
     }
