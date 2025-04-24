@@ -13,7 +13,6 @@
  *= require_tree .
  *= require_self
  */
- @import "custom";
 
  #task-text {
   overflow-y: auto; /* Enable vertical scrolling */
