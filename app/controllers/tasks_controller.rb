@@ -49,7 +49,7 @@ class TasksController < ApplicationController
     @task = @classroom.tasks.new(task_params)
     @task.author_id = current_user.id
     if @task.save
-      redirect_to classroom_tasks_path(@classroom), notice: "Tarefa Criada com Sucesso"
+      redirect_to classroom_tasks_path(@classroom), notice: "Texto Criada com Sucesso"
     else
       render :new
     end
@@ -59,7 +59,7 @@ class TasksController < ApplicationController
   def update
     respond_to do |format|
       if @task.update(task_params)
-        format.html { redirect_to classroom_tasks_path(@classroom), notice: "Tarefa Atualizada com Sucesso" }
+        format.html { redirect_to classroom_tasks_path(@classroom), notice: "Texto Atualizada com Sucesso" }
         format.json { render :show, status: :ok, location: @task }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -73,7 +73,7 @@ class TasksController < ApplicationController
     @task.destroy
 
     respond_to do |format|
-      format.html { redirect_to tasks_url, notice: "Tarefa Excluida." }
+      format.html { redirect_to tasks_url, notice: "Texto Excluida." }
       format.json { head :no_content }
     end
   end

@@ -13,7 +13,7 @@
 </head>
 <body class="bg-light">
   <div class="container mt-5">
-    <h1>Detalhes da atividade: <%= @task.title %></h1>
+    <h1>Detalhes do Texto: <%= @task.title %></h1>
     <h4>Tempo Previsto de Leitura: <%= @task.reading_time %> Minutos</h4>
     <table class="table table-striped mt-4">
       <thead>
@@ -37,7 +37,7 @@
         <% end %>
       </tbody>
     </table>
-    <%= link_to 'Voltar para Tarefas', classroom_tasks_path(@classroom), class: 'btn btn-info' %>
+    <%= link_to 'Voltar para Textos', classroom_tasks_path(@classroom), class: 'btn btn-info' %>
     <%= link_to 'Ver feedbacks', classroom_task_feedbacks_path(@classroom, @task), class: 'btn btn-info' %>
   </div>
 

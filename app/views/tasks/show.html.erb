@@ -1,6 +1,6 @@
 <p style="color: green"><%= notice %></p>
 <h4> Página <%= @page %> </h4>
-<%= link_to 'Voltar para Tarefas', classroom_tasks_path(@classroom), class: 'btn btn-secondary' %>
+<%= link_to 'Voltar para Textos', classroom_tasks_path(@classroom), class: 'btn btn-secondary' %>
 <div class="container">
   <h1 class="task-title"><%= @task.title %></h1>
 </div>
@@ -39,7 +39,7 @@
         <%= f.text_area :comment, size: "50x10" %><br>
       </div>
 
-      <%= f.submit "Submit Feedback", class: "btn btn-success" %>
+      <%= f.submit "Enviar Feedback", class: "btn btn-success" %>
     <% end %>
   </div>
 </div>
