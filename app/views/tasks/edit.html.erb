@@ -1,6 +1,36 @@
-<h1>Editar Tarefa</h1>
+<h1>Editar Texto</h1>
+<head>
+<style>
+  #avaliationTable {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+  }
+
+  #avaliationTable th {
+    background-color: #f8f9fa;
+    color: #343a40;
+    text-align: center;
+  }
+
+  #avaliationTable td {
+    background-color: #ffffff;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  #avaliationTable td#fleschCell {
+    font-weight: bold;
+  }
+
+  #avaliationTable td#comparisonCell {
+    font-style: italic;
+  }
+</style>
+</head>
 <div class="mb-3">
-  <%= link_to "Atividades", classroom_tasks_path(@classroom), class: "btn btn-secondary" %>
+  <%= link_to "Voltar", classroom_tasks_path(@classroom), class: "btn btn-secondary" %>
 </div>
 <div id="result"></div>
 <div id="comparation"></div>
@@ -22,7 +52,7 @@
   </div>
 
   <div class="mb-3">
-    <%= f.submit "Salvar Tarefa", class: 'btn btn-primary' %>
+    <%= f.submit "Salvar Texto", class: 'btn btn-primary' %>
   </div>
 
   <div class="mb-3">
@@ -30,99 +60,106 @@
   </div>
 <% end %>
 
+<!-- Tabela de Avaliação -->
+<div class="mb-3">
+  <table class="table table-bordered d-none" id="avaliationTable">
+    <thead class="thead-light">
+      <tr>
+        <th>Palavras</th>
+        <th>Sentenças</th>
+        <th>Sílabas</th>
+        <th>Flesch Reading Ease</th>
+        <th>Tempo de Leitura</th>
+        <th>Comparação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr id="avaliationRow">
+        <td id="wordCountCell"></td>
+        <td id="sentenceCountCell"></td>
+        <td id="syllableCountCell"></td>
+        <td id="fleschCell"></td>
+        <td id="readingTimeCell"></td>
+        <td id="comparisonCell"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-
+<!-- Script JS -->
 <script>
-document.addEventListener('turbo:load', function() {
-    // Wait for the DOM content to be fully loaded
+document.addEventListener('turbo:load', function () {
+  var textArea = document.getElementById('textArea');
+  var gradeLevelSelect = document.getElementById('gradeLevelSelect');
 
-    // Get the textarea element by its ID
-    var textArea = document.getElementById('textArea');
-    var gradeLevelSelect = document.getElementById('gradeLevelSelect');
-    var result  =  document.getElementById('result');
-    var comparation =  document.getElementById('comparation')
-    // Check if the textarea element exists
-    if (textArea) {
-          function countSyllables(word) {
-            word = word.toLowerCase().replace(/[^a-z]/g, ''); // Remove non-alphabetic characters
-            if (word.length <= 3) return 1; // Words of 3 letters or fewer are 1 syllable
-            word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, ''); // Remove common suffixes
-            word = word.replace(/^y/, ''); // Remove initial y
-            return word.match(/[aeiouy]{1,2}/g).length; // Count the remaining vowel sequences
-          }
-        // If the textarea exists, add a click event listener to the "Avaliar" button
-        document.getElementById('avaliarButton').addEventListener('click', function() {
-            // Get the text content of the textarea
+  function countSyllables(word) {
+    word = word.toLowerCase().replace(/[^a-z]/g, '');
+    if (word.length <= 3) return 1;
+    word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
+    word = word.replace(/^y/, '');
+    const matches = word.match(/[aeiouy]{1,2}/g);
+    return matches ? matches.length : 1;
+  }
 
-            var text = textArea.value;
-            var wordCount = text.trim().split(/\s+/).length;
-            var sentenceCount = text.trim().split(/[.!?]+/).length - 1;
-            var syllableCount = countSyllables(text);
-            var reading_time = wordCount / 200;
-            var flesh_kincaid_reading_ease = 206.835-(1.015*(wordCount/sentenceCount))-(84.6*(syllableCount/wordCount))
-            var selectedGradeLevel = gradeLevelSelect.value;
-            console.log("Selected Grade Level:", selectedGradeLevel);
-          var grade_levels = { fifth_grade: 0, sixth_grade: 1, seventh_grade: 2, eighth_and_nineth_grade: 3,tenth_to_twelveth_grade: 4, college: 5, college_graduate: 6, professional: 7 };
-        var flash_level = [];
+  document.getElementById('avaliarButton').addEventListener('click', function () {
+    var text = textArea.value.trim();
+    var words = text.split(/\s+/);
+    var wordCount = words.length;
+    var sentenceCount = text.split(/[.!?]+/).filter(Boolean).length;
+    var syllableCount = words.reduce((sum, word) => sum + countSyllables(word), 0);
+    var readingTime = wordCount / 200;
+    if (readingTime <1){
+      readingTime = 1
+    }
+    var flesch = 206.835 - (1.015 * (wordCount / sentenceCount)) - (84.6 * (syllableCount / wordCount));
+    var selectedGradeLevel = gradeLevelSelect.value;
 
-        switch (true) {
-          case flesh_kincaid_reading_ease >= 90 && flesh_kincaid_reading_ease<=100:
-              flash_level = [0,'Quinta Série']
-            break;
-          case flesh_kincaid_reading_ease >= 80 && flesh_kincaid_reading_ease<90:
-              flash_level = [1,'Sexta Série']
-            break; 
-          case flesh_kincaid_reading_ease >= 70 && flesh_kincaid_reading_ease<80:
-            flash_level = [2,'Setima Série']
-            break; 
-          case flesh_kincaid_reading_ease >= 60 && flesh_kincaid_reading_ease<70:
-            flash_level = [3,'Oitava e Nona Série']
-            break;
-          case flesh_kincaid_reading_ease >= 50 && flesh_kincaid_reading_ease<60:
-            flash_level = [4,'Ensino Médio']
-            break; 
-          case flesh_kincaid_reading_ease >= 30 && flesh_kincaid_reading_ease<50:
-            flash_level = [5,'Faculdade']
-            break; 
-          case flesh_kincaid_reading_ease >= 10 && flesh_kincaid_reading_ease<30:
-            flash_level = [6,'Graduado em faculdade']
-            break; 
-          default:
-            flash_level = [7,'Profissional']
-            break;
-        }
-        var text_level = grade_levels[selectedGradeLevel]
-      
-        result.innerHTML = "<strong>Quantidade de palavras:</strong> " + wordCount + "<br>" +
-                                                        "<strong>Quantidade de Sentenças:</strong> " + sentenceCount + "<br>" +
-                                                        "<strong>Quantidade de Silabas:</strong> " + syllableCount + "<br>" +
-                                                        "<strong>Flesch reading ease:</strong> " + flesh_kincaid_reading_ease.toFixed(2) + "<br>" + "<strong>Tempo de Leitura: </strong>" + Math.floor(reading_time) + " Minutos<br>"
+    var gradeLevels = {
+      fifth_grade: 0, sixth_grade: 1, seventh_grade: 2, eighth_and_nineth_grade: 3,
+      tenth_to_twelveth_grade: 4, college: 5, college_graduate: 6, professional: 7
+    };
 
-        var grade_difference = text_level-flash_level[0]
-        switch (true) {
-          case grade_difference <= -2:
-              comparation.innerHTML = "<strong>O Nivel  do texto está muito acima do proposto. O texto é adequado para alunos nivel</strong> " + flash_level[1] + "<br>"
-            break;
-          case grade_difference == -1:
-              comparation.innerHTML = "<strong>O Nivel  do texto está um pouco acima do proposto. O texto é adequado para alunos nivel</strong> " + flash_level[1] + "<br>"
-            break;
-          case grade_difference >= 2:
-              comparation.innerHTML = "<strong>O Nivel  do texto está muito abaixo do proposto. O texto é adequado para alunos nivel</strong> " + flash_level[1] + "<br>"
-            break;
-          case grade_difference == 1:
-              comparation.innerHTML = "<strong>O Nivel  do texto está um pouco abaixo do proposto. O texto é adequado para alunos nivel</strong> " + flash_level[1] + "<br>"
-            break;
-          default:
-            comparation.innerHTML = "<strong>O Nivel  do texto está no nivel adequado.</strong> " + "<br>"
-            break;
-        }
+    var flash_level = [];
+    switch (true) {
+      case flesch >= 90: flash_level = [0, 'Quinta Série']; break;
+      case flesch >= 80: flash_level = [1, 'Sexta Série']; break;
+      case flesch >= 70: flash_level = [2, 'Sétima Série']; break;
+      case flesch >= 60: flash_level = [3, 'Oitava e Nona Série']; break;
+      case flesch >= 50: flash_level = [4, 'Ensino Médio']; break;
+      case flesch >= 30: flash_level = [5, 'Faculdade']; break;
+      default: flash_level = [6, 'Graduado']; break;
+    }
 
-            });
-        } else {
-            console.error("Textarea element not found.");
-        }
+    var text_level = gradeLevels[selectedGradeLevel];
+    var grade_diff = text_level - flash_level[0];
+    var comparisonText = "";
+
+    switch (true) {
+      case grade_diff <= -2:
+        comparisonText = "Muito acima do nível proposto (" + flash_level[1] + ")";
+        break;
+      case grade_diff == -1:
+        comparisonText = "Um pouco acima do nível proposto (" + flash_level[1] + ")";
+        break;
+      case grade_diff >= 2:
+        comparisonText = "Muito abaixo do nível proposto (" + flash_level[1] + ")";
+        break;
+      case grade_diff == 1:
+        comparisonText = "Um pouco abaixo do nível proposto (" + flash_level[1] + ")";
+        break;
+      default:
+        comparisonText = "No nível adequado";
+        break;
+    }
+
+    // Exibir a tabela e preencher dados
+    document.getElementById('avaliationTable').classList.remove('d-none');
+    document.getElementById('wordCountCell').innerText = wordCount;
+    document.getElementById('sentenceCountCell').innerText = sentenceCount;
+    document.getElementById('syllableCountCell').innerText = syllableCount;
+    document.getElementById('fleschCell').innerText = flesch.toFixed(2);
+    document.getElementById('readingTimeCell').innerText = Math.ceil(readingTime) + " minuto(s)";
+    document.getElementById('comparisonCell').innerText = comparisonText;
+  });
 });
-
-
-
 </script>
