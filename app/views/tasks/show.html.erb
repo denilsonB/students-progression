@@ -1,49 +1,62 @@
-<p style="color: green"><%= notice %></p>
-<h4> Página <%= @page %> </h4>
-<%= link_to 'Voltar para Textos', classroom_tasks_path(@classroom), class: 'btn btn-secondary' %>
-<div class="container">
-  <h1 class="task-title"><%= @task.title %></h1>
-</div>
+<head>
+  <title>YourAppName</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-<div class="book-container">
-  <div class="book-page">
-    <div class="task-content">
-      <%= simple_format(@content_chunks[@page], id: 'task-text', data: { progress: @task_progress.progress }) %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= javascript_tag 'application' %>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <p style="color: green"><%= notice %></p>
+  <h4> Página <%= @page %> </h4>
+  <%= link_to 'Voltar para Textos', classroom_tasks_path(@classroom), class: 'btn btn-secondary' %>
+  <div class="container">
+    <h1 class="task-title"><%= @task.title %></h1>
+  </div>
+
+  <div class="book-container">
+    <div class="book-page">
+      <div class="task-content">
+        <%= simple_format(@content_chunks[@page], id: 'task-text', data: { progress: @task_progress.progress }) %>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="text-center">
-  <% if @page > 0 %>
-    <%= link_to "Anterior", classroom_task_path(@task.classroom, @task, page: @page - 1), id: 'prev-btn', class: "btn btn-secondary" %>
-  <% end %>
-  <% if @page < @content_chunks.size - 1 %>
-    <%= link_to "Proxima", classroom_task_path(@task.classroom, @task, page: @page + 1), id: 'next-btn', class: "btn btn-primary" %>
-  <% else %>
-    <%= link_to "Finalizar", "#", class: "btn btn-success", id: "finish-btn" %>
-  <% end %>
-</div>
-
-<!-- Modal -->
-<div id="feedbackModal" class="modal" style="display: none;">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <%= form_with(model: [@task, @feedback], url: classroom_task_feedbacks_path(@task.classroom, @task)) do |f| %>
-      <%= f.hidden_field :user_id, value: current_user.id %>
-      <%= f.hidden_field :task_id, value: @task.id %>
-
-      <div class="modal-content">
-        <%= f.label :note, "Como você avalia o texto?" %>
-        <%= f.select :note, options_for_select(["Abaixo do meu nível", "Adequado", "Acima do meu nível"]), class: "form-control" %>
-        <%= f.label 'Comentario' %>
-        <%= f.text_area :comment, size: "50x10" %><br>
-      </div>
-
-      <%= f.submit "Enviar Feedback", class: "btn btn-success" %>
+  <div class="text-center">
+    <% if @page > 0 %>
+      <%= link_to "Anterior", classroom_task_path(@task.classroom, @task, page: @page - 1), id: 'prev-btn', class: "btn btn-secondary" %>
+    <% end %>
+    <% if @page < @content_chunks.size - 1 %>
+      <%= link_to "Proxima", classroom_task_path(@task.classroom, @task, page: @page + 1), id: 'next-btn', class: "btn btn-primary" %>
+    <% else %>
+      <%= link_to "Finalizar", "#", class: "btn btn-success", id: "finish-btn" %>
     <% end %>
   </div>
-</div>
+  <!-- Modal -->
+  <div id="feedbackModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <%= form_with(model: [@task, @feedback], url: classroom_task_feedbacks_path(@task.classroom, @task)) do |f| %>
+        <%= f.hidden_field :user_id, value: current_user.id %>
+        <%= f.hidden_field :task_id, value: @task.id %>
 
+        <div class="modal-content">
+          <%= f.label :note, "Como você avalia o texto?" %>
+          <%= f.select :note, options_for_select(["Abaixo do meu nível", "Adequado", "Acima do meu nível"]), class: "form-control" %>
+          <%= f.label 'Comentario' %>
+          <%= f.text_area :comment, size: "50x10" %><br>
+        </div>
+
+        <%= f.submit "Enviar Feedback", class: "btn btn-success" %>
+      <% end %>
+    </div>
+  </div>
+</body>
 <script>
   
   let startTime = Date.now();

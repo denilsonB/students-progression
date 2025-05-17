@@ -1,0 +1,23 @@
+<% @tasks.each do |task| %>
+  <% if task.date_limit == Date.today %>
+    <% label = "Vence hoje" %>
+    <% badge_class = "badge badge-danger" %>
+  <% elsif task.date_limit == Date.tomorrow %>
+    <% label = "Vence amanhã" %>
+    <% badge_class = "badge badge-warning" %>
+  <% else %>
+    <% label = "Prazo indefinido" %>
+    <% badge_class = "badge badge-secondary" %>
+  <% end %>
+
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    <div>
+      <strong><%= task.title %></strong><br>
+      <small>Turma: <%= task.classroom.name %></small><br>
+      <span class="<%= badge_class %> mt-1"><%= label %></span>
+    </div>
+    <div>
+      <%= link_to "Ir para a turma", classroom_tasks_path(task.classroom), class: "btn btn-sm btn-outline-primary" %>
+    </div>
+  </li>
+<% end %>
