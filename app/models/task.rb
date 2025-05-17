@@ -10,6 +10,10 @@ class Task < ApplicationRecord
 
   before_save :set_reading_time 
 
+  scope :due_today_or_tomorrow, -> {
+    where(date_limit: Date.today..Date.tomorrow)
+  }
+
   TRANSLATED_GRADES =     { 
     "fifth_grade" => "Quinta Série",
     "sixth_grade" => "Sexta Série",

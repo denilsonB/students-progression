@@ -45,12 +45,14 @@
     <%= f.label :grade_level %>
     <%= f.select :grade_level, translate_grades, {}, id: 'gradeLevelSelect' %> <br>
   </div>
-
+  <div class="mb-3">
+    <%= f.label :date_limit, "Data limite da Leitura" %>
+    <%= f.date_field :date_limit, class: "form-control" %>
+  </div>
   <div class="mb-3">
     <%= f.label 'Conteúdo' %>
     <%= f.text_area :content, size: "50x10", id: 'textArea' %><br>
   </div>
-
   <div class="mb-3">
     <%= f.submit "Salvar Texto", class: 'btn btn-primary' %>
   </div>

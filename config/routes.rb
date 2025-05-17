@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   resources :classroom
   get '/sobre', to: 'pages#about', as: :about
+  get 'notifications', to: 'notifications#index', as: :notifications
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

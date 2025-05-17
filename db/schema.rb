@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_05_11_010552) do
+ActiveRecord::Schema[7.0].define(version: 2025_05_17_183250) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -64,6 +64,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_11_010552) do
     t.datetime "updated_at", null: false
     t.integer "grade_level"
     t.integer "reading_time", default: 0
+    t.date "date_limit"
     t.index ["author_id"], name: "index_tasks_on_author_id"
     t.index ["classroom_id"], name: "index_tasks_on_classroom_id"
   end

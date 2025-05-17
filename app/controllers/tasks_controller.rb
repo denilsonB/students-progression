@@ -105,7 +105,7 @@ class TasksController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def task_params
-      params.require(:task).permit(:title, :content, :grade_level)
+      params.require(:task).permit(:title, :content, :grade_level, :date_limit)
     end
 
     def set_classroom
