@@ -34,7 +34,11 @@
     <% if @page < @content_chunks.size - 1 %>
       <%= link_to "Proxima", classroom_task_path(@task.classroom, @task, page: @page + 1), id: 'next-btn', class: "btn btn-primary" %>
     <% else %>
-      <%= link_to "Finalizar", "#", class: "btn btn-success", id: "finish-btn" %>
+      <% if @task.date_limit.present? && Date.today > @task.date_limit %>
+        <%= link_to "Finalizar", "#", class: "btn btn-success disabled", id: "finish-btn", disabled: true %>
+      <% else %>
+        <%= link_to "Finalizar", "#", class: "btn btn-success", id: "finish-btn" %>
+      <% end %>
     <% end %>
   </div>
   <!-- Modal -->
