@@ -47,51 +47,26 @@ table tbody tr:nth-child(even) {
 table tbody tr:hover {
   background-color: #f2f2f2;
 }
-  /* Adjust the modal content */
-  #feedbackModal .modal-content {
-    background-color: #fff; /* Set background color */
-    padding: 20px; /* Add padding */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Add border radius */
-  }
-  
-
-  /* Style the form elements */
-  #feedbackModal label {
-    font-weight: bold;
+  #feedbackModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0; left: 0;
+    width: 10%;
+    height: 10%;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.5);
   }
 
-  #feedbackModal input[type="text"],
-  #feedbackModal textarea {
-    width: 100%;
-    padding: 8px;
-    margin-top: 8px;
-    margin-bottom: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-  }
-
-  #feedbackModal .btn-primary {
-    background-color: #007bff;
-    border: none;
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  #feedbackModal .btn-primary:hover {
-    background-color: #0056b3;
-  }
-
-  /* Style the close button */
-  #feedbackModal .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    color: #888;
-    cursor: pointer;
-  }
+#feedbackModal .modal-content {
+  background-color: #0c0000;
+  padding: 20px;
+  border: none;
+  border-radius: 5px;
+  max-width: 200px; /* limite de largura */
+  width: 90%;       /* responsivo */
+  max-height: 80vh; /* não deixa ocupar toda a altura */
+  overflow-y: auto; /* scroll se passar do limite */
+  box-sizing: border-box;
+}
