@@ -26,10 +26,10 @@
       <% @tasks.each do |task| %>
       <% unless @task_id_progress[task.id] == 100 || current_user.user_type == 'Professor'%>
         <% if task.date_limit == Date.today %>
-          <% label = "Vence hoje" %>
+          <% label = "Encerra hoje" %>
           <% badge_class = "badge badge-danger" %>
         <% elsif task.date_limit == Date.tomorrow %>
-          <% label = "Vence amanhã" %>
+          <% label = "Encerra amanhã" %>
           <% badge_class = "badge badge-warning" %>
         <% else %>
           <% label = nil %>

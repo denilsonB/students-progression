@@ -1,9 +1,9 @@
 <% @tasks.each do |task| %>
   <% if task.date_limit == Date.today %>
-    <% label = "Vence hoje" %>
+    <% label = "Encerra hoje" %>
     <% badge_class = "badge badge-danger" %>
   <% elsif task.date_limit == Date.tomorrow %>
-    <% label = "Vence amanhã" %>
+    <% label = "Encerra amanhã" %>
     <% badge_class = "badge badge-warning" %>
   <% else %>
     <% label = "Prazo indefinido" %>
