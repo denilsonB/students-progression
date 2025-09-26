@@ -1,57 +1,36 @@
-<h1>Novo Texto</h1>
-<head>
-<style>
-  #avaliationTable {
-    background-color: white;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-  }
+<h1 class="mb-4 text-center">Novo Texto</h1>
 
-  #avaliationTable th {
-    background-color: #f8f9fa;
-    color: #343a40;
-    text-align: center;
-  }
+<%= form_with(model: [@classroom, @task], url: classroom_tasks_path(@classroom), html: { class: "container" }) do |f| %>
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      
+      <div class="mb-3">
+        <%= f.label :title, "Título", class: "form-label fw-bold" %>
+        <%= f.text_field :title, class: "form-control" %>
+      </div>
 
-  #avaliationTable td {
-    background-color: #ffffff;
-    color: #212529;
-    text-align: center;
-    vertical-align: middle;
-  }
+      <div class="mb-3">
+        <%= f.label :grade_level, "Ano Escolar", class: "form-label fw-bold" %>
+        <%= f.select :grade_level, translate_grades, {}, class: "form-select", id: "gradeLevelSelect" %>
+      </div>
 
-  #avaliationTable td#fleschCell {
-    font-weight: bold;
-  }
+      <div class="mb-3">
+        <%= f.label :date_limit, "Data limite da Leitura", class: "form-label fw-bold" %>
+        <%= f.date_field :date_limit, class: "form-control" %>
+      </div>
 
-  #avaliationTable td#comparisonCell {
-    font-style: italic;
-  }
-</style>
-</head>
-<%= form_with(model: [@classroom, @task], url: classroom_tasks_path(@classroom)) do |f| %>
-  <div class="mb-3">
-    <%= f.label 'Titulo' %>
-    <%= f.text_field :title %><br>
-  </div>
-  <div class="mb-3">
-    <%= f.label :grade_level %>
-    <%= f.select :grade_level, translate_grades, {}, id: 'gradeLevelSelect' %> <br>
-  </div>
-  <div class="mb-3">
-    <%= f.label :date_limit, "Data limite da Leitura" %>
-    <%= f.date_field :date_limit, class: "form-control" %>
-  </div>
-  <div class="mb-3">
-    <%= f.label 'Conteúdo' %>
-    <%= f.text_area :content, size: "50x10", id: 'textArea' %><br>
-  </div>
-  <div class="mb-3">
-    <%= f.submit "Criar Texto", class: 'btn btn-primary' %>
-  </div>
+      <div class="mb-3">
+        <%= f.label :content, "Conteúdo", class: "form-label fw-bold" %>
+        <%= f.text_area :content, rows: 8, class: "form-control", id: "textArea" %>
+      </div>
 
-  <div class="mb-3">
-    <button type="button" id="avaliarButton" class="btn btn-info">Avaliar Texto</button><br><br>
+      <div class="d-flex justify-content-between mb-4">
+        <button type="button" id="avaliarButton" class="btn btn-info">
+          Avaliar Texto
+        </button>
+        <%= f.submit "Adicionar Texto", class: "btn btn-success" %>
+      </div>
+    </div>
   </div>
 <% end %>
 
